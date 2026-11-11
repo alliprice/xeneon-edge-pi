@@ -1,0 +1,6 @@
+# Corsair's STEP model of the monitor: download it, do not redistribute it.
+mount/ref/
+# The FreeCAD document embeds that model. flirc_bottom.py rebuilds it.
+mount/*.FCStd
+mount/*.FCBak
+__pycache__/
