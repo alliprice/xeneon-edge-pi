@@ -3,8 +3,44 @@
 A Raspberry Pi bolted to the back of a Corsair Xeneon Edge (14.5", 2560x720,
 touch), showing tiled browser windows.
 
-Status: the mount is modelled and not yet printed. The software is not
-started.
+Status: the mount is modelled and not yet printed. The software passes its
+tests on a desktop and has not yet run on a Pi; see "Not yet tested" below.
+
+## Software
+
+sway tiles one Chromium window per tile across the screen. Any web page can
+be a tile.
+
+- `kiosk/launch.py` reads `tiles.toml`, opens the windows and sets their
+  widths. Each `[[page]]` is a sway workspace; each tile has a `url` and a
+  `width` share, so 3 and 1 give 3/4 and 1/4.
+- `buttons/server.py` serves a page of Home Assistant buttons at
+  `http://127.0.0.1:8480/`, set up in `buttons.toml`. The Home Assistant
+  token stays in the server and is never sent to the page.
+
+### Install on the Pi
+
+1. Flash Raspberry Pi OS Lite (64-bit), connect it to the network, and clone
+   this repository on it.
+2. Run `pi/install.sh`. `pi/install.sh --dry-run` prints the steps first.
+3. Edit `~/.config/xeneon-edge-pi/tiles.toml` and `buttons.toml`.
+4. Reboot.
+
+A page that needs a login or a token gets it once, with a keyboard plugged
+in; Chromium keeps one profile for all tiles.
+
+### Develop without a Pi
+
+    python3 -m unittest discover -s tests
+    python3 tests/fake_home_assistant.py --port 8123      # token: fake-token
+    python3 buttons/server.py --config my-buttons.toml
+
+### Not yet tested
+
+- The display coming up at 2560x720 on a Pi, and touch under sway.
+- `kiosk/launch.py` against a real sway.
+- `pi/install.sh` on a real Raspberry Pi OS image.
+- The buttons server against a real Home Assistant.
 
 ## Mount
 
