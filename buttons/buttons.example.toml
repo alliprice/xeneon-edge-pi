@@ -1,0 +1,51 @@
+# Copy to ~/.config/xeneon-edge-pi/buttons.toml and edit.
+# Restart the server after a change:  systemctl --user restart xeneon-buttons
+
+[home_assistant]
+url = "http://homeassistant.local:8123"
+# Home Assistant: your profile, Security, Long-lived access tokens.
+token = "PASTE-A-LONG-LIVED-TOKEN"
+
+# One [[button]] per button, in the order they appear on the page.
+#   label    the text on the button
+#   service  what a press does, as domain.service
+#   entity   what it acts on; its state decides whether the button looks on
+#   icon     light, plug, fan, lock, tv, scene, heat, door, power or dot
+#   color    peach, mint, butter, pink, sky or lilac; a default follows the icon
+#   data     extra service data, for example { brightness_pct = 40 }
+
+[[button]]
+label = "Desk lamp"
+service = "light.toggle"
+entity = "light.desk_lamp"
+icon = "light"
+
+[[button]]
+label = "Ceiling"
+service = "light.toggle"
+entity = "light.office_ceiling"
+icon = "light"
+
+[[button]]
+label = "Fan"
+service = "fan.toggle"
+entity = "fan.office"
+icon = "fan"
+
+[[button]]
+label = "Movie time"
+service = "scene.turn_on"
+entity = "scene.movie_time"
+icon = "scene"
+
+[[button]]
+label = "Front door"
+service = "lock.lock"
+entity = "lock.front_door"
+icon = "lock"
+
+[[button]]
+label = "Heater"
+service = "switch.toggle"
+entity = "switch.space_heater"
+icon = "heat"

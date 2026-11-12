@@ -1,0 +1,16 @@
+# Copy to ~/.config/xeneon-edge-pi/tiles.toml and edit.
+# Check it with:  python3 kiosk/launch.py --config <file> --check
+#
+# Each [[page]] fills the screen; its tiles sit side by side, left to right.
+# `width` is a share of the screen: 3 and 1 give 3/4 and 1/4.
+
+[[page]]
+
+[[page.tile]]
+url = "http://janus.example:8470/"
+width = 3
+
+[[page.tile]]
+# The Home Assistant buttons page that this project serves on the Pi.
+url = "http://127.0.0.1:8480/"
+width = 1

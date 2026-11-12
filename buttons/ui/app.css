@@ -1,0 +1,145 @@
+/* A row of keycaps on the back of a violet monitor. An unlit key is cream;
+   a key whose thing is on takes its pastel and sits pressed down. */
+:root {
+  --plate: #2b1a57;
+  --plate-edge: #1f1242;
+  --cream: #f7efe1;
+  --cream-side: #d9cdb8;
+  --ink: #33284d;
+  --ink-soft: #7a6f93;
+  --peach: #f7c59f;
+  --mint: #b9e4c9;
+  --butter: #f6e3a0;
+  --pink: #f5b5cb;
+  --sky: #b4d8f2;
+  --lilac: #cdbdf4;
+  --travel: 7px;
+  --gap: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; margin: 0; }
+
+body {
+  background: var(--plate);
+  color: var(--ink);
+  font-family: ui-rounded, "SF Pro Rounded", Quicksand, "Nunito", system-ui, sans-serif;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+#keys {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  grid-auto-rows: 1fr;
+  gap: var(--gap);
+  padding: var(--gap) var(--gap) calc(var(--gap) + var(--travel));
+}
+
+.key {
+  --tone: var(--lilac);
+  --top: var(--cream);
+  --side: var(--cream-side);
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* The cap is a separate element so pressing moves it without moving the
+   key's place in the grid. */
+.cap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 16px 14px;
+  border-radius: 18px;
+  background: var(--top);
+  box-shadow: 0 var(--travel) 0 var(--side), 0 calc(var(--travel) + 3px) 0 var(--plate-edge);
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out, background-color 160ms;
+}
+
+.key.on .cap {
+  --top: var(--tone);
+  --side: color-mix(in srgb, var(--tone) 72%, #4a2f6b);
+  background: var(--top);
+  transform: translateY(3px);
+  box-shadow: 0 calc(var(--travel) - 3px) 0 var(--side), 0 var(--travel) 0 var(--plate-edge);
+}
+
+.key:active .cap,
+.key.sending .cap {
+  transform: translateY(var(--travel));
+  box-shadow: 0 0 0 var(--side), 0 2px 0 var(--plate-edge);
+}
+
+.key:focus-visible .cap { outline: 3px solid #fff; outline-offset: 3px; }
+
+.key svg {
+  width: clamp(34px, 38%, 64px);
+  height: auto;
+  aspect-ratio: 1;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--ink-soft);
+}
+.key.on svg { color: var(--ink); }
+
+.legend { text-align: left; line-height: 1.15; }
+.label { display: block; font-size: 21px; font-weight: 700; overflow-wrap: anywhere; }
+.state { display: block; margin-top: 3px; font-size: 15px; color: var(--ink-soft); }
+.key.on .state { color: color-mix(in srgb, var(--ink) 75%, var(--tone)); }
+
+.key.missing .cap { background: repeating-linear-gradient(
+  -45deg, var(--cream), var(--cream) 10px, #ece2cf 10px, #ece2cf 20px); }
+.key.failed .cap { animation: refuse 260ms ease-in-out; }
+@keyframes refuse {
+  25% { translate: -5px 0; }
+  75% { translate: 5px 0; }
+}
+
+.offline .key .cap { opacity: 0.45; }
+
+#notice {
+  margin: 0;
+  padding: 12px 18px 14px;
+  background: var(--pink);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+#keys:empty::before {
+  content: "No buttons yet. Add a [[button]] to buttons.toml and restart the server.";
+  grid-column: 1 / -1;
+  align-self: center;
+  padding: 0 24px;
+  color: var(--cream);
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cap { transition: none; }
+  .key.failed .cap { animation: none; }
+}
